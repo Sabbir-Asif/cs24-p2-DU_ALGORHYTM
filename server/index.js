@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const connection = require("./db");
 const userRoutes = require("./routes/signup");
 const authRoutes = require("./routes/login");
-const passwordResetRoutes = require("./routes/passwordReset");
+//const passwordResetRoutes = require("./routes/passwordReset");
 const changePasswordRoutes = require('./routes/changePassword');
 const addUser = require("./routes/addUser");
 const rbacRoutes = require("./routes/rbac");
@@ -31,9 +31,9 @@ connection();
 
 // Routes
 app.use("/signup", userRoutes);
-app.use("/auth/login", authRoutes);
+app.use("/auth", authRoutes);
 app.use('/auth/change-password', changePasswordRoutes);
-app.use("/auth", passwordResetRoutes); 
+//app.use("/auth", passwordResetRoutes); 
 app.use("/users", addUser);
 app.use("/rbac", rbacRoutes);
 app.use("/vehicles", vehicleRoutes);

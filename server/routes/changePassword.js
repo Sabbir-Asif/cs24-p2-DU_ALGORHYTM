@@ -17,14 +17,14 @@ const authenticate = (req, res, next) => {
     }
 };
 
-router.put("/change-password", authenticate, async (req, res) => {
+router.put("/", authenticate, async (req, res) => {
     try {
         const { currentPassword, newPassword, confirmNewPassword } = req.body;
         if (newPassword !== confirmNewPassword) {
             return res.status(400).json({ success: false, message: "New passwords do not match." });
         }
 
-        const user = await User.findById(req.user.usrId);
+        const user = await User.findOne({ userId: req.user.usrId });
         if (!user) return res.status(404).json({ success: false, message: "User not found." });
 
         const validPassword = await bcrypt.compare(currentPassword, user.password);
