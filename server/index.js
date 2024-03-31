@@ -12,8 +12,8 @@ const rbacRoutes = require("./routes/rbac");
 const vehicleRoutes = require("./routes/dataEntry");
 const stsRoutes = require('./routes/sts');
 const landfillRoutes = require('./routes/landfill');
-const distanceRoutes = require('./routes/distance');
-const billRoutes = require('./routes/bill');
+//const distanceRoutes = require('./routes/distance');
+//const billRoutes = require('./routes/bill');
 const optimizedRoutes = require('./routes/fleet');
 
 const app = express();
@@ -39,8 +39,8 @@ app.use("/rbac", rbacRoutes);
 app.use("/vehicles", vehicleRoutes);
 app.use('/api/sts', stsRoutes);
 app.use('/api/landfill', landfillRoutes);
-app.use('/api/distance', distanceRoutes);
-app.use('/api/bills',billRoutes);
+//app.use('/api/distance', distanceRoutes);
+//app.use('/api/bills',billRoutes);
 app.use('/api/optimized-route',optimizedRoutes);
 
 const port = process.env.PORT || 8080;

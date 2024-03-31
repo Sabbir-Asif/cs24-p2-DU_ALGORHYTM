@@ -13,7 +13,6 @@ const BillsSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  // Changed to Date type for timestamps
   arrivalTime: {
     type: Date,
     required: true
@@ -42,7 +41,6 @@ const BillsSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  // Added stsLocationId and landfillLocationId fields
   stsLocationId: {
     type: String,
     required: true
