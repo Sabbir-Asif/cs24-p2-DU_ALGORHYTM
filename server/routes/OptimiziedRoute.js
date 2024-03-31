@@ -70,7 +70,7 @@ router.post('/', async (req, res) => {
             }
         };
 
-        const query = new URLSearchParams({ key: '0981671d-e144-4a29-9ce0-812ff9084eaa' }).toString();
+        const query = new URLSearchParams({ key: '250df523-2b37-46e8-b780-2dd0991031b3' }).toString();
         const graphHopperResponse = await fetch(`https://graphhopper.com/api/1/vrp?${query}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -79,40 +79,7 @@ router.post('/', async (req, res) => {
 
         const graphHopperData = await graphHopperResponse.json();
 
-        // Assuming distance and time are directly available in the graphHopperData (adjust according to actual API response)
-        const distanceKm = graphHopperData.solution.distance / 1000; // Example conversion to km
-        const timeHours = graphHopperData.solution.time / 3600; // Example conversion to hours
-
-        const costPerKm = vehicle.fuelCostUnloaded + ((weight / vehicle.capacity) * (vehicle.fuelCostFullyLoaded - vehicle.fuelCostUnloaded));
-        const cost = distanceKm * costPerKm; // Example cost calculation
-
-        const highestBill = await Bills.findOne({}, {}, { sort: { 'billId': -1 } });
-    let billId;
-    if (highestBill && highestBill.billId > 0) {
-        billId = parseInt(highestBill.billId) + 1;
-    }
-    else{
-        billId = 1;
-    }
-        // Generate a new bill with the calculated cost
-        const newBill = new Bills({
-            billId: billId,
-            registrationNumber,
-            wardNumber,
-            arrivalTime: new Date(arrivalTime),
-            departureTime: new Date(departureTime),
-            stsLocationId: sts.locationId,
-            landfillLocationId: landfill.locationId,
-            distance: distanceKm,
-            time: timeHours,
-            weight,
-            costPerKm,
-            cost,
-            // Add any additional fields as required
-        });
-
-        const savedBill = await newBill.save();
-        res.status(201).json(savedBill);
+        res.status(200).json(graphHopperData); // Returning the response from GraphHopper API
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "An error occurred while processing the request." });

@@ -18,7 +18,7 @@ router.post("/login", async (req, res) => {
         res.cookie('token', token, {
             secure: false, // Set to false if you're testing over HTTP
             maxAge: 7 * 24 * 60 * 60 * 1000, // Token expiration time in milliseconds
-        }).status(200).json({ success: true, message: "Logged in successfully", userID: user.userId, roleId: user.roleId});
+        }).status(200).json({ success: true, message: "Logged in successfully", userId: user.userId, roleId: user.roleId});
 
     } catch (error) {
         console.log(error);

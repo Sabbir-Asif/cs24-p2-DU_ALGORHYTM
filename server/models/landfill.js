@@ -6,6 +6,10 @@ const LandfillSchema = new mongoose.Schema({
     required: true,
     unique: true // Ensures uniqueness of landfillId
   },
+  locationId: {
+    type: String,
+    required: true,
+  },
   longitude: {
     type: Number,
     required: true,
