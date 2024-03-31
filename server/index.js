@@ -12,8 +12,8 @@ const rbacRoutes = require("./routes/rbac");
 const vehicleRoutes = require("./routes/dataEntry");
 const stsRoutes = require('./routes/sts');
 const landfillRoutes = require('./routes/landfill');
-//const distanceRoutes = require('./routes/distance');
-//const billRoutes = require('./routes/bill');
+const distanceMap = require('./routes/OptimiziedRoute');
+const statRoutes = require('./routes/Statistics');
 const optimizedRoutes = require('./routes/GenerateBill');
 
 const app = express();
@@ -40,8 +40,9 @@ app.use("/vehicles", vehicleRoutes);
 app.use('/api/sts', stsRoutes);
 app.use('/api/landfill', landfillRoutes);
 //app.use('/api/distance', distanceRoutes);
-//app.use('/api/bills',billRoutes);
+app.use('/api/view-map',distanceMap);
 app.use('/api/optimized-route',optimizedRoutes);
+app.use('/api/bills', statRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
