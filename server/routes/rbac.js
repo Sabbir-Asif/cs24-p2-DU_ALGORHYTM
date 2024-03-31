@@ -111,6 +111,68 @@ router.post('/permissions', verifyAdmin, async (req, res) => {
 router.get('/permissions', verifyAdmin, async (req, res) => {
     try {
         const permissions = await Permission.find();
+        res.json({success: true, permissions});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+//  GET a single permission by ID
+router.get('/permissions/:permissionId', verifyAdmin, async (req, res) => {
+    try {
+        const permission = await Permission.findOne({ permissionId: req.params.permissionId });
+        if (!permission) return res.status(404).json({ message: "Permission not found" });
+        res.json({success: true,permission});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+// PUT method to update a permission
+router.put('/permissions/:permissionId', verifyAdmin, async (req, res) => {
+    try {
+        const { permissionName } = req.body;
+        const permission = await Permission.findOneAndUpdate(
+            { permissionId: req.params.permissionId },
+            { permissionName },
+            { new: true } // Return the modified document rather than the original
+        );
+        if (!permission) return res.status(404).json({ message: "Permission not found" });
+        res.json({success: true, permission});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+// Delete method to delete a permission
+router.delete('/permissions/:permissionId', async (req, res) => {
+    try {
+        const permission = await Permission.findOneAndDelete({ permissionId: req.params.permissionId });
+        if (!permission) return res.status(404).json({ message: "Permission not found" });
+        res.status(204).json({ message: "Permission deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+// GET all permissions of a role
+router.get('/roles/:roleId/permissions', async (req, res) => {
+    try {
+        // Fetch the role by roleId
+        const role = await Role.findOne({ roleId: req.params.roleId });
+        if (!role) {
+            return res.status(404).json({ message: "Role not found" });
+        }
+
+        // Fetch all permissions that match the IDs in the role's permissions array
+        const permissions = await Permission.find({
+            permissionId: { $in: role.permissions }
+        });
+
         res.json(permissions);
     } catch (error) {
         console.error(error);
@@ -118,12 +180,26 @@ router.get('/permissions', verifyAdmin, async (req, res) => {
     }
 });
 
-// To get a single permission by ID
-router.get('/permissions/:permissionId', verifyAdmin, async (req, res) => {
+
+// PUT method to add permission in a role 
+router.put('/roles/:roleId/permissions', async (req, res) => {
     try {
-        const permission = await Permission.findOne({ permissionId: req.params.permissionId });
-        if (!permission) return res.status(404).json({ message: "Permission not found" });
-        res.json(permission);
+        const permissionToAdd = req.body.permissions; // Assuming this is a single integer
+
+        // Find the role by roleId and update it
+        const role = await Role.findOne({ roleId: req.params.roleId });
+        if (!role) {
+            return res.status(404).json({ message: "Role not found" });
+        }
+
+        // Check if the permission to add already exists in the role's permissions
+        if (!role.permissions.includes(permissionToAdd)) {
+            role.permissions.push(permissionToAdd);
+            await role.save();
+            res.status(200).json({ message: "Permission added successfully", role });
+        } else {
+            res.status(400).json({ message: "Permission already exists in this role" });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal Server Error" });

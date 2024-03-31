@@ -13,16 +13,16 @@ const vehicleValidator = (data) => {
     let capacity;
     switch (type) {
         case 'openTruck':
-            capacity = '3';
+            capacity = '3000';
             break;
         case 'dumpTruck':
-            capacity = '5';
+            capacity = '5000';
             break;
         case 'compactor':
-            capacity = '7';
+            capacity = '7000';
             break;
         case 'container':
-            capacity = '15';
+            capacity = '15000';
             break;
         default:
             return { error: 'Invalid vehicle type' };
@@ -90,6 +90,8 @@ router.post('/', async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
+
+
 // Route to get all vehicles
 router.get('/', async (req, res) => {
     try {

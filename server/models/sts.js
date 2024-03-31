@@ -9,6 +9,10 @@ const STSSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  locationId: {
+    type: String,
+    required: true,
+  },
   longitude: {
     type: Number,
     required: true,

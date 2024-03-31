@@ -108,7 +108,6 @@ router.post('/', async (req, res) => {
             weight,
             costPerKm,
             cost,
-            // Add any additional fields as required
         });
 
         const savedBill = await newBill.save();

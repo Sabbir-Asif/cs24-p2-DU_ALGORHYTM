@@ -14,14 +14,14 @@ const stsRoutes = require('./routes/sts');
 const landfillRoutes = require('./routes/landfill');
 //const distanceRoutes = require('./routes/distance');
 //const billRoutes = require('./routes/bill');
-const optimizedRoutes = require('./routes/fleet');
+const optimizedRoutes = require('./routes/GenerateBill');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:8080', 
+    origin: 'http://localhost:5173', 
     credentials: true
 }));
 app.use(cookieParser());
